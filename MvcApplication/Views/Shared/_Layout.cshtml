@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href="/Style/Main.css" rel="stylesheet" />
+		<title>@ViewBag.Title - MVC lab-application</title>
+	</head>
+	<body>
+		<header>
+			<h1>
+				<img src="/Style/Images/Logo.png" alt="A logo" />
+			</h1>
+			<div>
+				@if(User.Identity.IsAuthenticated)
+				{
+					<p>
+						You are signed in as: <strong>@Context.User.Identity.Name</strong> <a href="/Authentication/SignOut/">Sign out</a>
+					</p>
+				}
+				else
+				{
+					<p>
+						<a href="/Authentication/">Sign in</a>
+					</p>
+				}
+			</div>
+		</header>
+		<ul class="navigation">
+			<li>
+				<a href="/">Home</a>
+			</li>
+			<li>
+				<a href="/Administration/">Administration</a>
+			</li>
+		</ul>
+		<h1>@ViewBag.Title</h1>
+		@if(IsSectionDefined("InformationContent"))
+		{
+			@RenderSection("InformationContent")
+		}
+		else
+		{
+			<hr />
+			<h2>Current user</h2>
+			<ul>
+				<li>Is authenticated: <strong>@User.Identity.IsAuthenticated</strong></li>
+				<li>User-name: <strong>@User.Identity.Name</strong></li>
+				<li>User-authentication type: <strong>@User.Identity.AuthenticationType</strong></li>
+				<li>IIS logon-user: <strong>@Request.ServerVariables["LOGON_USER"]</strong></li>
+			</ul>
+			<hr />
+			if(Context.ApplicationInstance.Modules.Count > 0)
+			{
+				<h2>Http-modules</h2>
+				<ul>
+					@foreach(var key in Context.ApplicationInstance.Modules.AllKeys)
+					{
+						<li>
+							<strong>@key: </strong>@Context.ApplicationInstance.Modules[key].GetType().FullName</li>
+					}
+				</ul>
+				<hr />
+			}
+		}
+		@RenderSection("MainContent")
+	</body>
+</html>

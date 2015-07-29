@@ -1,0 +1,12 @@
+_ReSharper*/
+App_Data/
+bin/
+debug/
+FakesAssemblies/
+obj/
+packages/*
+release/
+testresults/
+*.suo
+*.user
+.nuget/NuGet.exe

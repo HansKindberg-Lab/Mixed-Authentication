@@ -1,0 +1,21 @@
+﻿@{ ViewBag.Title = "Authentication"; }
+@model MvcApplication.Models.ViewModels.AuthenticationViewModel
+@section InformationContent {}
+@section MainContent
+{
+	@if(User.Identity.IsAuthenticated)
+	{
+		<div class="system-information warning">
+			<h2>Already signed in</h2>
+			<p>You are already signed in as @User.Identity.Name</p>
+		</div>
+	}
+	else
+	{
+		<h2>Windows sign in</h2>
+		<p>
+			<a href="@Model.SignInWithWindowsIdentityUrl.PathAndQueryAndFragment()">Sign in as windows-user.</a>
+		</p>
+	}
+	@Html.Partial("~/Views/Shared/Forms/AuthenticationForm.cshtml", Model.Form)
+}

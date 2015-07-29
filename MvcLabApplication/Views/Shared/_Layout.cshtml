@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>@ViewBag.Title - MVC lab-application</title>
+	</head>
+	<body>
+		<ul>
+			<li>
+				<a href="/">Home</a>
+			</li>
+			<li>
+				<a href="/WindowsAuthentication/">Windows-authentication</a>
+			</li>
+		</ul>
+		<h1>@ViewBag.Title </h1>
+		<hr />
+		<h2>Current user</h2>
+		<ul>
+			<li>
+				Is authenticated: <strong>@User.Identity.IsAuthenticated</strong>
+			</li>
+			<li>
+				User-name: <strong>@User.Identity.Name</strong>
+			</li>
+			<li>
+				User-authentication type: <strong>@User.Identity.AuthenticationType</strong>
+			</li>
+			<li>
+				IIS logon-user: <strong>@Request.ServerVariables["LOGON_USER"]</strong>
+			</li>
+		</ul>
+		<hr />
+		@if(Context.ApplicationInstance.Modules.Count > 0)
+		{
+			<h2>Modules</h2>
+			<ul>
+				@foreach(var key in Context.ApplicationInstance.Modules.AllKeys)
+				{
+					<li>
+						<strong>@key: </strong>@Context.ApplicationInstance.Modules[key].GetType().FullName
+					</li>
+				}
+			</ul>
+			<hr />
+		}
+		@RenderSection("MainContent")
+	</body>
+</html>

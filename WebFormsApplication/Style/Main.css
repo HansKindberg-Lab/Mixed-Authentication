@@ -1,0 +1,79 @@
+﻿body {
+	padding: 1em;
+}
+
+h1 {
+	clear: both;
+}
+
+label {
+	display: block;
+	font-weight: bold;
+}
+
+input[type="checkbox"] {
+	margin: 0;
+}
+
+fieldset div {
+	margin-top: 0.6em;
+}
+
+header {
+	clear: both;
+}
+
+header h1,
+header div {
+	clear: none;
+	float: left;
+	margin: 0;
+	padding: 0;
+	width: 50%;
+}
+
+header div {
+	text-align: right;
+}
+
+.display-inline {
+	display: inline;
+}
+
+ul.navigation {
+	clear: both;
+	list-style-type: none;
+	margin-bottom: 3em;
+	padding: 0;
+}
+
+ul.navigation li {
+	float: left;
+	margin-right: 1em;
+}
+
+.system-information {
+	background-color: #FCFAF0;
+	border-style: solid;
+	border-width: 6px 0;
+	margin: 1.33em 0;
+	padding: 1.33em 15px 0;
+}
+
+.system-information h2,
+.system-information h3 {
+	margin-top: 0;
+	font-weight: bold;
+}
+
+.confirmation {
+	border-color: #2EC63F;
+}
+
+.exception {
+	border-color: #CA3437;
+}
+
+.warning {
+	border-color: #C5A524;
+}

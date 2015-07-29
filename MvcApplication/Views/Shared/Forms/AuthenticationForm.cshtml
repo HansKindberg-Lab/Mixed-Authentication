@@ -1,0 +1,26 @@
+﻿@model MvcApplication.Models.Forms.AuthenticationFormModel
+<h2>Forms sign in</h2>
+<p>You do not have to enter any credentials. Just click sign in and you will be signed in as "@Shared.Global.TheUserName". If you check "Remember me" the cookie will be persisted.</p>
+@if(Model != null)
+{
+	using(Html.BeginForm())
+	{
+		<fieldset>
+			<div>
+				@Html.LabelFor(model => model.UserName)
+				@Html.TextBoxFor(model => model.UserName, new {autofocus = "autofocus"})
+			</div>
+			<div>
+				@Html.LabelFor(model => model.Password)
+				@Html.PasswordFor(model => model.Password)
+			</div>
+			<div>
+				@Html.CheckBoxFor(model => model.Persist)
+				@Html.LabelFor(model => model.Persist, new {@class = "display-inline"})
+			</div>
+			<div>
+				<button>Sign in</button>
+			</div>
+		</fieldset>
+	}
+}

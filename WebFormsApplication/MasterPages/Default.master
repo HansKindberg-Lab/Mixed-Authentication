@@ -1,0 +1,54 @@
+﻿<%@ Master AutoEventWireup="false" CodeBehind="Default.master.cs" Inherits="WebFormsApplication.MasterPages.Default" Language="C#"
+%><!DOCTYPE html>
+<html>
+	<head runat="server">
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href="<%= this.ResolveUrl("~/Style/Main.css") %>" rel="stylesheet" />
+	</head>
+	<body>
+		<asp:PlaceHolder id="HeaderPlaceHolder" runat="server">
+			<header>
+				<h1><img src="<%= this.ResolveUrl("~/Style/Images/Logo.png") %>" alt="A logo" /></h1>
+				<div>
+					<asp:PlaceHolder Visible="<%# this.Context.User.Identity.IsAuthenticated %>" runat="server">
+						<p>You are signed in as: <strong><%# this.Context.User.Identity.Name %></strong> <a href="<%# this.ResolveUrl("~/Util/SignOut.aspx") %>">Sign out</a></p>
+					</asp:PlaceHolder>
+					<asp:PlaceHolder Visible="<%# !this.Context.User.Identity.IsAuthenticated %>" runat="server">
+						<p><a href="<%# this.ResolveUrl("~/Util/SignIn.aspx") %>">Sign in</a></p>
+					</asp:PlaceHolder>
+				</div>
+			</header>		
+		</asp:PlaceHolder>
+		<ul class="navigation">
+			<li><a href="<%= this.ResolveUrl("~/") %>">Home</a></li>
+			<li><a href="<%= this.ResolveUrl("~/Administration") %>">Administration</a></li>
+		</ul>
+		<h1><%= this.Page.Title %></h1>
+		<asp:ContentPlaceHolder id="InformationContentPlaceHolder" runat="server">
+			<hr />
+			<h2>Current user</h2>
+			<ul>
+				<li>Is authenticated: <strong><%= this.Context.User.Identity.IsAuthenticated %></strong></li>
+				<li>User-name: <strong><%= this.Context.User.Identity.Name %></strong></li>
+				<li>User-authentication type: <strong><%= this.Context.User.Identity.AuthenticationType %></strong></li>
+				<li>IIS logon-user: <strong><%= this.Context.Request.ServerVariables["LOGON_USER"] %></strong></li>
+			</ul>
+			<hr />
+			<asp:Repeater id="ModuleRepeater" DataSource="<%# this.ApplicationInstance.Modules %>" runat="server">
+				<HeaderTemplate>
+					<h2>Http-modules</h2>
+					<ul>
+				</HeaderTemplate>
+				<ItemTemplate>
+					<li><strong><%# Container.DataItem %>: </strong><%# this.ApplicationInstance.Modules[(string) Container.DataItem].GetType().FullName %></li>
+				</ItemTemplate>
+				<FooterTemplate>
+					</ul>
+					<hr />
+				</FooterTemplate>
+			</asp:Repeater>
+		</asp:ContentPlaceHolder>
+		<asp:ContentPlaceHolder id="MainContentPlaceHolder" runat="server"/>
+	</body>
+</html>
