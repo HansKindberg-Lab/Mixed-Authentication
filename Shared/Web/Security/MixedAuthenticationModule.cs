@@ -89,6 +89,9 @@ namespace Shared.Web.Security
 
 		public virtual void Init(HttpApplication context)
 		{
+			if(context == null)
+				throw new ArgumentNullException("context");
+
 			if(this.AuthenticationSection.Mode != AuthenticationMode.None)
 				throw new NotSupportedException("The mixed-authentication-module requires authentication-mode \"None\".");
 

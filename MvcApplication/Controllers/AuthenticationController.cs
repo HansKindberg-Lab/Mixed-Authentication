@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Web.Mvc;
 using System.Web.Security;
 using MvcApplication.Models.Forms;
@@ -23,6 +24,8 @@ namespace MvcApplication.Controllers
 			};
 		}
 
+		[SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
+		[SuppressMessage("Microsoft.Design", "CA1055:UriReturnValuesShouldNotBeStrings")]
 		protected internal virtual string GetReturnUrl()
 		{
 			var returnUrl = this.HttpContext.Request.QueryString["ReturnUrl"];
