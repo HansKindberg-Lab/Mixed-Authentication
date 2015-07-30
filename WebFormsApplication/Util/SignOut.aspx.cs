@@ -1,11 +1,18 @@
 ﻿using System;
-using System.Web.Security;
-using System.Web.UI;
+using Shared.InversionOfControl;
+using Shared.Web.Security;
 
 namespace WebFormsApplication.Util
 {
-	public partial class SignOut : Page
+	public partial class SignOut : AuthenticationPage
 	{
+		#region Constructors
+
+		public SignOut() : this(ServiceLocator.Instance.GetService<IFormsAuthentication>()) {}
+		public SignOut(IFormsAuthentication formsAuthentication) : base(formsAuthentication) {}
+
+		#endregion
+
 		#region Methods
 
 		protected override void OnInit(EventArgs e)
@@ -14,7 +21,7 @@ namespace WebFormsApplication.Util
 
 			if(this.User.Identity.IsAuthenticated)
 			{
-				FormsAuthentication.SignOut();
+				this.FormsAuthentication.SignOut();
 
 				this.Response.Redirect(this.Request.RawUrl);
 			}

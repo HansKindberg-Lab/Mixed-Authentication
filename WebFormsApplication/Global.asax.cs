@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Web;
-using System.Web.Mvc;
-using System.Web.Routing;
 using Shared.StructureMap;
 using StructureMap;
 using ServiceLocator = Shared.InversionOfControl.ServiceLocator;
-using StructureMapDependencyResolver = Shared.StructureMap.Web.Mvc.DependencyResolver;
 using StructureMapServiceLocator = Shared.StructureMap.ServiceLocator;
 
-namespace MvcApplication
+namespace WebFormsApplication
 {
 	public class Global : HttpApplication
 	{
@@ -21,8 +18,6 @@ namespace MvcApplication
 			var container = new Container(new Registry());
 
 			ServiceLocator.Instance = new StructureMapServiceLocator(container);
-
-			DependencyResolver.SetResolver(new StructureMapDependencyResolver(container));
 		}
 
 		#endregion
@@ -33,20 +28,7 @@ namespace MvcApplication
 		protected void Application_BeginRequest(object sender, EventArgs e) {}
 		protected void Application_End(object sender, EventArgs e) {}
 		protected void Application_Error(object sender, EventArgs e) {}
-
-		protected void Application_Start(object sender, EventArgs e)
-		{
-			AreaRegistration.RegisterAllAreas();
-
-			RouteTable.Routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-
-			RouteTable.Routes.MapRoute(
-				name: "Default",
-				url: "{controller}/{action}/{id}",
-				defaults: new {controller = "Home", action = "Index", id = UrlParameter.Optional}
-				);
-		}
-
+		protected void Application_Start(object sender, EventArgs e) {}
 		protected void Session_End(object sender, EventArgs e) {}
 		protected void Session_Start(object sender, EventArgs e) {}
 

@@ -20,6 +20,16 @@ namespace Shared.Web.Security
 			FormsAuthentication.Initialize();
 		}
 
+		public virtual void SetAuthenticationCookie(string userName, bool createPersistentCookie)
+		{
+			FormsAuthentication.SetAuthCookie(userName, createPersistentCookie);
+		}
+
+		public virtual void SignOut()
+		{
+			FormsAuthentication.SignOut();
+		}
+
 		#endregion
 	}
 }

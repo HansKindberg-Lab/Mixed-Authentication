@@ -9,8 +9,8 @@ namespace Shared.Web.Security
 	{
 		#region Fields
 
+		private static readonly FieldInfo _fAuthRequiredField = typeof(FormsAuthenticationModule).GetField("_fAuthRequired", BindingFlags.NonPublic | BindingFlags.Static);
 		private readonly FormsAuthenticationModule _formsAuthenticationModule;
-		private static readonly FieldInfo _formsAuthenticationRequiredField = typeof(FormsAuthenticationModule).GetField("_fAuthRequired", BindingFlags.NonPublic | BindingFlags.Static);
 		private Action<object, EventArgs> _onEnterAction;
 		private static readonly MethodInfo _onEnterMethod = typeof(FormsAuthenticationModule).GetMethod("OnEnter", BindingFlags.Instance | BindingFlags.NonPublic);
 		private Action<object, EventArgs> _onLeaveAction;
@@ -39,15 +39,15 @@ namespace Shared.Web.Security
 
 		#region Properties
 
+		public virtual bool Enabled
+		{
+			get { return (bool) _fAuthRequiredField.GetValue(null); }
+			set { _fAuthRequiredField.SetValue(null, value); }
+		}
+
 		protected internal virtual FormsAuthenticationModule FormsAuthenticationModule
 		{
 			get { return this._formsAuthenticationModule; }
-		}
-
-		public virtual bool FormsAuthenticationRequired
-		{
-			get { return (bool) _formsAuthenticationRequiredField.GetValue(this.FormsAuthenticationModule); }
-			set { _formsAuthenticationRequiredField.SetValue(this.FormsAuthenticationModule, value); }
 		}
 
 		protected internal virtual Action<object, EventArgs> OnEnterAction
@@ -73,6 +73,10 @@ namespace Shared.Web.Security
 		{
 			this.FormsAuthenticationModule.Init(context);
 		}
+
+		#endregion
+
+		#region Eventhandlers
 
 		public virtual void OnAuthenticateRequest(object sender, EventArgs e)
 		{

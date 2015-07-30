@@ -11,6 +11,8 @@ namespace Shared.Web.Security
 		#region Methods
 
 		void Initialize();
+		void SetAuthenticationCookie(string userName, bool createPersistentCookie);
+		void SignOut();
 
 		#endregion
 	}
