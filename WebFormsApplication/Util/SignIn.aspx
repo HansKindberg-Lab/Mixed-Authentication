@@ -21,7 +21,7 @@
 			</div>
 			<div>
 				<asp:Label AssociatedControlID="PasswordTextBox" runat="server">Password</asp:Label>
-				<asp:TextBox id="PasswordTextBox" runat="server" />
+				<asp:TextBox id="PasswordTextBox" TextMode="Password" runat="server" />
 			</div>
 			<div>
 				<asp:CheckBox id="PersistCheckBox" runat="server" />
