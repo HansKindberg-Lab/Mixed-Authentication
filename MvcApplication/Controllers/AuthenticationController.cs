@@ -1,14 +1,42 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Security.Principal;
 using System.Web.Mvc;
-using System.Web.Security;
 using MvcApplication.Models.Forms;
 using MvcApplication.Models.ViewModels;
+using Shared.Web.Security;
 
 namespace MvcApplication.Controllers
 {
 	public class AuthenticationController : Controller
 	{
+		#region Fields
+
+		private readonly IFormsAuthentication _formsAuthentication;
+
+		#endregion
+
+		#region Constructors
+
+		public AuthenticationController(IFormsAuthentication formsAuthentication)
+		{
+			if(formsAuthentication == null)
+				throw new ArgumentNullException("formsAuthentication");
+
+			this._formsAuthentication = formsAuthentication;
+		}
+
+		#endregion
+
+		#region Properties
+
+		protected internal virtual IFormsAuthentication FormsAuthentication
+		{
+			get { return this._formsAuthentication; }
+		}
+
+		#endregion
+
 		#region Methods
 
 		protected internal virtual AuthenticationViewModel CreateModel()
@@ -47,17 +75,26 @@ namespace MvcApplication.Controllers
 			if(form == null)
 				throw new ArgumentNullException("form");
 
-			FormsAuthentication.SetAuthCookie(string.IsNullOrWhiteSpace(form.UserName) ? Shared.Global.TheUserName : form.UserName, form.Persist);
+			this.FormsAuthentication.SetAuthenticationCookie(string.IsNullOrWhiteSpace(form.UserName) ? Shared.Global.TheUserName : form.UserName, form.Persist);
 
 			return this.Redirect(this.GetReturnUrl());
 		}
 
 		public virtual ActionResult SignInWithWindowsIdentity()
 		{
-			var logonUser = this.Request.ServerVariables["LOGON_USER"];
+			var user = this.HttpContext.User;
 
-			if(!string.IsNullOrEmpty(logonUser))
-				FormsAuthentication.SetAuthCookie(logonUser, true);
+			// ReSharper disable InvertIf
+			if(user != null && user.Identity.IsAuthenticated && user.Identity is WindowsIdentity)
+			{
+				var windowsUserName = user.Identity.Name;
+
+				if(string.IsNullOrEmpty(windowsUserName))
+					throw new InvalidOperationException("The user-identity-name can not be null or empty.");
+
+				this.FormsAuthentication.SetAuthenticationCookie(windowsUserName, true);
+			}
+			// ReSharper restore InvertIf
 
 			return this.Redirect(this.GetReturnUrl());
 		}
@@ -66,7 +103,7 @@ namespace MvcApplication.Controllers
 		{
 			if(this.User.Identity.IsAuthenticated)
 			{
-				FormsAuthentication.SignOut();
+				this.FormsAuthentication.SignOut();
 
 				return this.Redirect(this.Request.RawUrl);
 			}

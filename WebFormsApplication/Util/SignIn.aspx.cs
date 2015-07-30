@@ -1,15 +1,21 @@
 ﻿using System;
-using System.Web.Security;
-using System.Web.UI;
-using Shared;
+using Shared.InversionOfControl;
+using Shared.Web.Security;
 
 namespace WebFormsApplication.Util
 {
-	public partial class SignIn : Page
+	public partial class SignIn : AuthenticationPage
 	{
 		#region Fields
 
 		private Uri _windowsSignInUrl;
+
+		#endregion
+
+		#region Constructors
+
+		public SignIn() : this(ServiceLocator.Instance.GetService<IFormsAuthentication>()) {}
+		public SignIn(IFormsAuthentication formsAuthentication) : base(formsAuthentication) {}
 
 		#endregion
 
@@ -48,14 +54,9 @@ namespace WebFormsApplication.Util
 
 		protected internal virtual void OnSignInButtonClick(object sender, EventArgs e)
 		{
-			FormsAuthentication.SetAuthCookie(Global.TheUserName, this.PersistCheckBox.Checked);
+			this.FormsAuthentication.SetAuthenticationCookie(string.IsNullOrWhiteSpace(this.UserNameTextBox.Text) ? Shared.Global.TheUserName : this.UserNameTextBox.Text, this.PersistCheckBox.Checked);
 
-			var returnUrl = this.Request.QueryString["ReturnUrl"];
-
-			if(string.IsNullOrEmpty(returnUrl))
-				returnUrl = "/";
-
-			this.Response.Redirect(returnUrl);
+			this.Response.Redirect(this.GetReturnUrl());
 		}
 
 		#endregion

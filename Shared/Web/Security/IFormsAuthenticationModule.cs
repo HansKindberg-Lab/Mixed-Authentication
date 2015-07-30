@@ -4,7 +4,7 @@ using System.Web.Security;
 
 namespace Shared.Web.Security
 {
-	public interface IFormsAuthenticationModule
+	public interface IFormsAuthenticationModule : IHttpModule
 	{
 		#region Events
 
@@ -14,14 +14,12 @@ namespace Shared.Web.Security
 
 		#region Properties
 
-		bool FormsAuthenticationRequired { get; set; }
+		bool Enabled { get; set; }
 
 		#endregion
 
 		#region Methods
 
-		void Dispose();
-		void Init(HttpApplication context);
 		void OnAuthenticateRequest(object sender, EventArgs e);
 		void OnEndRequest(object sender, EventArgs e);
 

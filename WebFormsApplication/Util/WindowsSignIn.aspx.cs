@@ -1,28 +1,40 @@
 ﻿using System;
-using System.Web.Security;
-using System.Web.UI;
+using System.Security.Principal;
+using Shared.InversionOfControl;
+using Shared.Web.Security;
 
 namespace WebFormsApplication.Util
 {
-	public partial class WindowsSignIn : Page
+	public partial class WindowsSignIn : AuthenticationPage
 	{
+		#region Constructors
+
+		public WindowsSignIn() : this(ServiceLocator.Instance.GetService<IFormsAuthentication>()) {}
+		public WindowsSignIn(IFormsAuthentication formsAuthentication) : base(formsAuthentication) {}
+
+		#endregion
+
 		#region Methods
 
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
 
-			var logonUser = this.Request.ServerVariables["LOGON_USER"];
+			var user = this.User;
 
-			if(!string.IsNullOrEmpty(logonUser))
-				FormsAuthentication.SetAuthCookie(logonUser, true);
+			// ReSharper disable InvertIf
+			if(user != null && user.Identity.IsAuthenticated && user.Identity is WindowsIdentity)
+			{
+				var windowsUserName = user.Identity.Name;
 
-			var returnUrl = this.Request.QueryString["ReturnUrl"];
+				if(string.IsNullOrEmpty(windowsUserName))
+					throw new InvalidOperationException("The user-identity-name can not be null or empty.");
 
-			if(string.IsNullOrEmpty(returnUrl))
-				returnUrl = "/";
+				this.FormsAuthentication.SetAuthenticationCookie(windowsUserName, true);
+			}
+			// ReSharper restore InvertIf
 
-			this.Response.Redirect(returnUrl);
+			this.Response.Redirect(this.GetReturnUrl());
 		}
 
 		#endregion

@@ -6,17 +6,17 @@ namespace Shared.Web.Configuration
 	{
 		#region Fields
 
-		private const string _disableFormsAuthenticationPropertyName = "disableFormsAuthentication";
+		private const string _formsAuthenticationDisabledPropertyName = "formsAuthenticationDisabled";
 
 		#endregion
 
 		#region Properties
 
-		[ConfigurationProperty(_disableFormsAuthenticationPropertyName, DefaultValue = false)]
-		public virtual bool DisableFormsAuthentication
+		[ConfigurationProperty(_formsAuthenticationDisabledPropertyName, DefaultValue = false)]
+		public virtual bool FormsAuthenticationDisabled
 		{
-			get { return (bool) this[_disableFormsAuthenticationPropertyName]; }
-			set { this[_disableFormsAuthenticationPropertyName] = value; }
+			get { return (bool) this[_formsAuthenticationDisabledPropertyName]; }
+			set { this[_formsAuthenticationDisabledPropertyName] = value; }
 		}
 
 		#endregion
